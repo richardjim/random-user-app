@@ -4,11 +4,15 @@ import moment from "moment";
 import { AiOutlineMail } from "react-icons/ai";
 import { FaMobileAlt } from "react-icons/fa";
 import { FcCellPhone } from "react-icons/fc";
+// import Card from "../components/card";
+import Pagination from "../components/paginate";
 
-const baseApi = `https://randomuser.me/api`;
+const baseApi = `https://randomuser.me/api?results=50`;
 
 const User = () => {
   const [users, setUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(10);
 
   const fetchUserData = async () => {
     const res = await fetch(baseApi);
@@ -20,11 +24,16 @@ const User = () => {
   useEffect(() => {
     fetchUserData();
   }, []);
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <>
-      <section className="bg-green-500 flex items-center justify-center px-10 py-20 xl:h-screen">
-        {users.map((user) => {
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        {currentUsers.map((user) => {
           const {
             login: { uuid, username },
             name: { title, first, last },
@@ -48,7 +57,7 @@ const User = () => {
           return (
             <div
               key={uuid}
-              className="bg-white py-4 px-8 rounded-lg xl:w-9/12 xl:px-0 xl:pb-0"
+              className="bg-white shadow-lg py-4 px-8 rounded-lg xl:w-9/12 xl:px-0 xl:pb-0"
             >
               <img
                 src={large}
@@ -74,17 +83,17 @@ const User = () => {
                   <small className="block mt-2 text-xl">{age} Years</small>
                   <small className="block mt-2 text-xl">@{username}</small>
                 </div>
-
-                <div className="my-10 xl:my-0">
+            
+                {/* <div className="my-10 xl:my-0">
                   <p className="flex items-center mt-1">
                     <FaMobileAlt className="mr-2" /> {phone}
                   </p>
                   <p className="flex items-center mt-1">
                     <FcCellPhone className="mr-2" /> {cell}
                   </p>
-                </div>
+                </div> */}
 
-                <ul className="my-20 xl:my-0">
+                {/* <ul className="my-20 xl:my-0">
                   <GrLocationPin className="text-4xl" />
                   <li>Country: {country}</li>
                   <li>City: {city}</li>
@@ -93,24 +102,30 @@ const User = () => {
                   <li>
                     Street: {number}, {name}
                   </li>
-                </ul>
+                </ul> */}
 
-                <div>
+                {/* <div>
                   <GrLocation className="text-4xl" />
                   <p>Latitude: {latitude}</p>
                   <p>Longitude: {longitude}</p>
-                </div>
+                </div> */}
               </div>
 
-              <div className="xl:bg-gray-800 xl:text-white xl:px-8 xl:rounded-b-lg xl:pb-8">
+              {/* <div className="xl:bg-gray-800 xl:text-white xl:px-8 xl:rounded-b-lg xl:pb-8">
                 <p>
                   Timezone: {offset}, {description}
                 </p>
-              </div>
+              </div> */}
             </div>
           );
         })}
+        
       </section>
+      <Pagination
+                  usersPerPage={usersPerPage}
+                  totalUsers={users.length}
+                  paginate={paginate}
+                />
     </>
   );
 };

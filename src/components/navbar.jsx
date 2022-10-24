@@ -132,8 +132,6 @@ function NavBar() {
         </Transition>
       </nav>
 
-    
-    
     </div>
   );
 }
