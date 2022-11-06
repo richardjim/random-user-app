@@ -1,8 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Transition } from "@headlessui/react";
+import { Link } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db, logout } from "../services/firebase";
+import { useNavigate } from "react-router-dom";
+import About from "../views/About";
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, loading, error } = useAuthState(auth);
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
+  const fetchUserName = async () => {
+    try {
+      const q = query(collection(db, "users"), where("uid", "==", user?.uid));
+      const doc = await getDocs(q);
+      const data = doc.docs[0].data();
+      setName(data.name);
+    } catch (err) {
+      console.error(err);
+      message("An error occurred while fetching user data");
+    }
+  };
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return navigate("/");
+    fetchUserName();
+  }, [user, loading]);
+
   return (
     <div>
       <nav className="bg-gray-800">
@@ -22,14 +47,42 @@ function NavBar() {
                     href="#"
                     className=" hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
-                   Home
+                    <Link to="/"> Home </Link>
                   </a>
-                  {/* <a
+                  <a
+                    href="#"
+                    className=" hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    {user?.displayName ? (
+                      <button onClick={logout}>Log Out</button>
+                    ) : (
+                      <Link to="/login">Login</Link>
+                    )}
+
+                    {/* <button onClick={logout}>Logout</button> */}
+                  </a>
+                  <div className="hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">
+                    {user?.displayName}
+                  </div>
+                  <div className="hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">
+                    {user?.email}
+                  </div>
+                  <a
                     href="#"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
-                    
-                  </a> */}
+                    <Link to="/About">About</Link>
+                  </a>
+                  <a
+                    href="#"
+                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    {user?.displayName ? (
+                      ""
+                    ) : (
+                      <Link to="/register">Register</Link>
+                    )}
+                  </a>
                 </div>
               </div>
             </div>
@@ -96,28 +149,39 @@ function NavBar() {
                   href="#"
                   className="hover:bg-gray-700 text-white block px-3 py-2 rounded-md text-base font-medium"
                 >
-                  Dashboard
+                  <Link to="/">Home</Link>
                 </a>
 
                 <a
                   href="#"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                 >
-                  Team
+                  <div className="hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">
+                    {user?.displayName}
+                  </div>
+                  {user?.displayName ? (
+                    ""
+                  ) : (
+                    <Link to="/register">Register</Link>
+                  )}
                 </a>
 
                 <a
                   href="#"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                 >
-                  Projects
+                  {user?.displayName ? (
+                    <button onClick={logout}>Log Out</button>
+                  ) : (
+                    <Link to="/login">Login</Link>
+                  )}
                 </a>
 
                 <a
                   href="#"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                 >
-                  Calendar
+                  <Link to="/about">About</Link>
                 </a>
 
                 <a
@@ -131,7 +195,6 @@ function NavBar() {
           )}
         </Transition>
       </nav>
-
     </div>
   );
 }
