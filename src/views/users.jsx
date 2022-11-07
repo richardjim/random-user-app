@@ -3,7 +3,7 @@ import moment from "moment";
 import { AiOutlineMail } from "react-icons/ai";
 import Pagination from "../components/paginate";
 
-const baseApi = `https://randomuser.me/api?results=50`;
+const baseApi = `https://randomuser.me/api/?page=1&results=50&nat=us`;
 
 const User = () => {
   const [users, setUsers] = useState([]);
@@ -68,17 +68,16 @@ const User = () => {
                   <small className="block mt-2 text-xl">{age} Years</small>
                   <small className="block mt-2 text-xl">@{username}</small>
                 </div>
-        </div>
-        </div>
+              </div>
+            </div>
           );
         })}
-        
       </section>
       <Pagination
-                  usersPerPage={usersPerPage}
-                  totalUsers={users.length}
-                  paginate={paginate}
-                />
+        usersPerPage={usersPerPage}
+        totalUsers={users.length}
+        paginate={paginate}
+      />
     </>
   );
 };

@@ -10,7 +10,7 @@
 
 .paginationItem {
   background: #fff;
-  border: 2px solid #666;
+  border: 1px solid #666;
   padding: 10px 15px;
   border-radius: 50%;
   height: 45px;
@@ -18,15 +18,15 @@
   position: relative;
   margin: 0 5px;
   cursor: pointer;
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
 }
-
+/* 
 .paginationItem span {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
+} */
 
 .prev,
 .next {
@@ -40,8 +40,8 @@
 }
 
 .paginationItem.active {
-  border: 1px solid #888;
-  color: #888;
+  /* border: 1px solid #888; */
+  color: #0000ff27;
   pointer-events: none;
 }
 
