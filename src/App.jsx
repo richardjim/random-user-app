@@ -6,8 +6,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import Home from "./views/Home";
 import { ErrorBoundary } from "react-error-boundary";
-import About from "./views/About"
-
+import About from "./views/About";
 
 function ErrorFallback({ error }) {
   return (
@@ -53,6 +52,7 @@ function ErrorFallback({ error }) {
     </>
   );
 }
+const helmetContext = {};
 function App() {
   return (
     <>
@@ -62,7 +62,7 @@ function App() {
             <Route exact path="/login" element={<Login />} />
             <Route exact path="/register" element={<Register />} />
             {/* <Route exact path="/reset" element={<Reset />} /> */}
-            <Route exact path="/about" element={<About  />} />
+            <Route exact path="/about" element={<About />} />
             <Route exact path="/" element={<Home />} />
           </Routes>
         </ErrorBoundary>

@@ -12,7 +12,7 @@ const Home = () => {
         name="AltSchool Africa Test'
         type='article."
       />
-
+   
       <NavBar />
       <div className="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
         <div className="mx-auto shadow border p-8 m-10">
@@ -20,6 +20,7 @@ const Home = () => {
         </div>
         <User />
       </div>
+    
     </>
   );
 };
